@@ -15,7 +15,23 @@ class QrCodeExtension extends BasicBundle {
 
 
     eventHandlers = {
+        // TODO add layer visibility etc events
         'AfterMapMoveEvent': ev => {
+            this.qr();
+        },
+        'MapLayerEvent': ev => {
+            this.qr();
+        },
+        'AfterChangeMapLayerOpacityEvent': ev => {
+            this.qr();
+        },
+        'AfterRearrangeSelectedMapLayerEvent': ev => {
+            this.qr();
+        },
+        'AfterMapLayerRemoveEvent': ev => {
+            this.qr();
+        },
+        'AfterChangeMapLayerStyleEvent': ev => {
             this.qr();
         }
     }
