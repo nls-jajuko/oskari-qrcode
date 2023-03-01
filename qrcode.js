@@ -37,6 +37,11 @@ class QrCodeExtension extends BasicBundle {
         super.start(sandbox);
 
         this.locale = Oskari.getLocalization(this.name);
+        
+        let hostEl = document.getElementById('maptools');
+        this.el = document.createElement('div');
+        hostEl.appendChild(el);
+                
 
         this.qr();
 
@@ -66,7 +71,7 @@ class QrCodeExtension extends BasicBundle {
         var img = document.createElement('img');
         img.setAttribute('src', qrurl);
 
-        var el = document.getElementById('oskari-system-messages');
+        var el = this.el;
         while (el.firstChild) {
             el.firstChild.remove();
         }
