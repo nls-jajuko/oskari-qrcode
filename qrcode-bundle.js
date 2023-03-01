@@ -46,7 +46,7 @@ class QrCodeExtension extends BasicBundle {
        
         let hostEl = document.getElementById('maptools');
         this.el = document.createElement('div');
-        hostEl.appendChild(el);
+        hostEl.appendChild(this.el);
 
 
         this.qr();
