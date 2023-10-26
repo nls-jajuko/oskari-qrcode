@@ -38,7 +38,7 @@ class QrCodeExtension extends BasicBundle {
 
         this.locale = Oskari.getLocalization(this.name);
         
-        let hostEl = document.getElementById('maptools');
+        let hostEl = document.getElementById('divider');
         this.el = document.createElement('div');
         hostEl.appendChild(this.el);
                 
