@@ -1,38 +1,60 @@
-
 const BasicBundle = Oskari.clazz.get('Oskari.BasicBundle');
 
 class QrCodeExtension extends BasicBundle {
     name = 'QR';
+
+    linkToolVisible = false;
+
+    linkUrl = undefined;
+    linkQrCode = undefined;
 
     conf = {
     }
 
 
     eventHandlers = {
-        // TODO add layer visibility etc events
+
+         // TODO add layer visibility etc events
         'AfterMapMoveEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
         'MapLayerEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
         'AfterChangeMapLayerOpacityEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
         'AfterRearrangeSelectedMapLayerEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
         'AfterMapLayerRemoveEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
         'AfterChangeMapLayerStyleEvent': ev => {
-            this.qr();
+            this.updateQrCode();
         },
+        
         'Toolbar.ToolSelectedEvent': ev => {
-            console.log(ev);
+            if(ev.getToolId()=='link') {
+                this.updateQrCode();
+            } else {
+                this.linkQrCode = undefined;
+                this.linkUrl = undefined;
+            
+            }
         }
     }
 
+    updateQrCode() {
+        var el = document.querySelector('.t_oskari-maplink');
+        this.linkToolVisible = el !== undefined;
+        if(el) {
+                    this.qr(el);
+        } else {
+            this.linkQrCode = undefined;
+            this.linkUrl = undefined;
+        }
+    }
 
     getSandbox() { return this.sandbox; }
     getLocalization(key) { return this.locale[key]; }
@@ -40,13 +62,6 @@ class QrCodeExtension extends BasicBundle {
         super.start(sandbox);
 
         this.locale = Oskari.getLocalization(this.name);
-        
-        let hostEl = document.getElementById('divider');
-        this.el = document.createElement('div');
-        hostEl.appendChild(this.el);
-                
-
-        this.qr();
 
     }
 
@@ -59,11 +74,17 @@ class QrCodeExtension extends BasicBundle {
     }
 
 
-    qr() {
+    qr(el) {
 
         var mapUrlPrefix = this.getMapUrl();
         var linkParams = this.getSandbox().generateMapLinkParameters({});
         var baseUrl = mapUrlPrefix + linkParams + '&noSavedState=true';
+
+        if(this.linkUrl && baseUrl == this.linkUrl) {
+            return;
+        }
+
+        this.linkUrl = baseUrl;
 
         var qr = new QRious({
             value: baseUrl
@@ -74,10 +95,12 @@ class QrCodeExtension extends BasicBundle {
         var img = document.createElement('img');
         img.setAttribute('src', qrurl);
 
+/*
         var el = this.el;
         while (el.firstChild) {
             el.firstChild.remove();
         }
+*/
         el.appendChild(img);
     }
 
@@ -111,5 +134,3 @@ function register(impl, bundleId, implClassName) {
 register(QrCodeBundle, 'qr', "Oskari.qr.QrCodeBundle");
 
 new QrCodeBundle().create().start(Oskari.getSandbox());
-
-
