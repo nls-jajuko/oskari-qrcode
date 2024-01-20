@@ -15,27 +15,12 @@ class QrCodeExtension extends BasicBundle {
 
 
     eventHandlers = {
-        // TODO add layer visibility etc events
-        'AfterMapMoveEvent': ev => {
-            this.qr();
-        },
-        'MapLayerEvent': ev => {
-            this.qr();
-        },
-        'AfterChangeMapLayerOpacityEvent': ev => {
-            this.qr();
-        },
-        'AfterRearrangeSelectedMapLayerEvent': ev => {
-            this.qr();
-        },
-        'AfterMapLayerRemoveEvent': ev => {
-            this.qr();
-        },
-        'AfterChangeMapLayerStyleEvent': ev => {
-            this.qr();
-        },
+        
         'Toolbar.ToolSelectedEvent': ev => {
-            console.log(ev);
+            if(ev.getToolId() == 'link' ) {
+                var el = document.getElementsByClassName('t_oskari-maplink').item(0);
+                this.qr(el);
+            } 
         }
     }
 
@@ -52,8 +37,6 @@ class QrCodeExtension extends BasicBundle {
         hostEl.appendChild(this.el);
 
 
-        this.qr();
-
     }
 
 
@@ -65,7 +48,7 @@ class QrCodeExtension extends BasicBundle {
     }
 
 
-    qr() {
+    qr(el) {
 
         var mapUrlPrefix = this.getMapUrl();
         var linkParams = this.getSandbox().generateMapLinkParameters({});
@@ -80,10 +63,11 @@ class QrCodeExtension extends BasicBundle {
         var img = document.createElement('img');
         img.setAttribute('src', qrurl);
 
-        var el = this.el;
+        /*var el = this.el;
         while (el.firstChild) {
             el.firstChild.remove();
-        }
+        }*/
+
         el.appendChild(img);
     }
 
