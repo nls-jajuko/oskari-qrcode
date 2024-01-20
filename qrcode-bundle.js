@@ -101,6 +101,7 @@ class QrCodeExtension extends BasicBundle {
 
         var img = document.createElement('img');
         img.setAttribute('src', qrurl);
+        img.style.width = '12rem';
 
 /*
         var el = this.el;
