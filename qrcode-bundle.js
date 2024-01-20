@@ -51,12 +51,12 @@ class QrCodeExtension extends BasicBundle {
     updateQrCode() {
         var el = document.querySelector('.t_oskari-maplink');
         this.linkToolVisible = el !== undefined;
-        if(!el) {
+        if(el) {
+                    this.qr(el);
+        } else {
             this.linkQrCode = undefined;
             this.linkUrl = undefined;
-            return;
         }
-        this.qr(el);
     }
 
     getSandbox() { return this.sandbox; }
@@ -86,6 +86,8 @@ class QrCodeExtension extends BasicBundle {
         if(this.linkUrl && baseUrl == this.linkUrl) {
             return;
         }
+
+        this.linkUrl = baseUrl;
 
         var qr = new QRious({
             value: baseUrl
