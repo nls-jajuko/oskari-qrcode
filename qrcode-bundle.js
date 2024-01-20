@@ -10,20 +10,52 @@ const BasicBundle = Oskari.clazz.get('Oskari.BasicBundle');
 class QrCodeExtension extends BasicBundle {
     name = 'QR';
 
+    linkToolVisible = false;
+
+    linkUrl = undefined;
+    linkQrCode = undefined;
+
     conf = {
     }
 
 
     eventHandlers = {
+
+         // TODO add layer visibility etc events
+        'AfterMapMoveEvent': ev => {
+            this.updateQrCode();
+        },
+        'MapLayerEvent': ev => {
+            this.updateQrCode();
+        },
+        'AfterChangeMapLayerOpacityEvent': ev => {
+            this.updateQrCode();
+        },
+        'AfterRearrangeSelectedMapLayerEvent': ev => {
+            this.updateQrCode();
+        },
+        'AfterMapLayerRemoveEvent': ev => {
+            this.updateQrCode();
+        },
+        'AfterChangeMapLayerStyleEvent': ev => {
+            this.updateQrCode();
+        },
         
         'Toolbar.ToolSelectedEvent': ev => {
-            if(ev.getToolId() == 'link' ) {
-                var el = document.getElementsByClassName('t_oskari-maplink').item(0);
-                this.qr(el);
-            } 
+            this.updateQrCode();
         }
     }
 
+    updateQrCode() {
+        var el = document.querySelector('.t_oskari-maplink');
+        this.linkToolVisible = el !== undefined;
+        if(!this.linkToolVisible) {
+            this.linkQrCode = undefined;
+            this.linkUrl = undefined;
+            return;
+        }
+        this.qr(el);
+    }
 
     getSandbox() { return this.sandbox; }
     getLocalization(key) { return this.locale[key]; }
@@ -31,11 +63,6 @@ class QrCodeExtension extends BasicBundle {
         super.start(sandbox);
 
         this.locale = Oskari.getLocalization(this.name);
-       
-        let hostEl = document.getElementById('divider');
-        this.el = document.createElement('div');
-        hostEl.appendChild(this.el);
-
 
     }
 
@@ -54,6 +81,10 @@ class QrCodeExtension extends BasicBundle {
         var linkParams = this.getSandbox().generateMapLinkParameters({});
         var baseUrl = mapUrlPrefix + linkParams + '&noSavedState=true';
 
+        if(this.linkUrl && baseUrl == this.linkUrl) {
+            return;
+        }
+
         var qr = new QRious({
             value: baseUrl
         });
@@ -63,11 +94,12 @@ class QrCodeExtension extends BasicBundle {
         var img = document.createElement('img');
         img.setAttribute('src', qrurl);
 
-        /*var el = this.el;
+/*
+        var el = this.el;
         while (el.firstChild) {
             el.firstChild.remove();
-        }*/
-
+        }
+*/
         el.appendChild(img);
     }
 
