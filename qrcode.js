@@ -27,6 +27,9 @@ class QrCodeExtension extends BasicBundle {
         },
         'AfterChangeMapLayerStyleEvent': ev => {
             this.qr();
+        },
+        'Toolbar.ToolSelectedEvent': ev => {
+            console.log(ev);
         }
     }
 
