@@ -51,7 +51,7 @@ class QrCodeExtension extends BasicBundle {
     updateQrCode() {
         var el = document.querySelector('.t_oskari-maplink');
         this.linkToolVisible = el !== undefined;
-        if(!this.linkToolVisible) {
+        if(!el) {
             this.linkQrCode = undefined;
             this.linkUrl = undefined;
             return;
