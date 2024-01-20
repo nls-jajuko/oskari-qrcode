@@ -44,6 +44,10 @@ class QrCodeExtension extends BasicBundle {
         'Toolbar.ToolSelectedEvent': ev => {
             if(ev.getToolId()=='link') {
                 this.updateQrCode();
+            } else {
+                this.linkQrCode = undefined;
+                this.linkUrl = undefined;
+            
             }
         }
     }
