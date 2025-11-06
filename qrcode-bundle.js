@@ -99,17 +99,12 @@ class QrCodeExtension extends BasicBundle {
 
         var qrurl = qr.toDataURL();
 
-        var img = document.createElement('img');
+        var img = el.querySelector('.qr');
+        if(!img) { img = document.createElement('img'); el.appendChild(img);}
         img.setAttribute('src', qrurl);
         img.style.width = '12rem';
+        img.classList.add('qr');
 
-/*
-        var el = this.el;
-        while (el.firstChild) {
-            el.firstChild.remove();
-        }
-*/
-        el.appendChild(img);
     }
 
 }
